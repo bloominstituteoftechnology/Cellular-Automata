@@ -1,6 +1,10 @@
 # Cellular-Automata
 
-Over the next few days, you will be implementing your own version of Conway's Game of Life - a popular ***cellular automata***. Your application, when finished, should include:
+Over the next few days, you will be implementing your own version of Conway's Game of Life - a popular ***cellular automata***. 
+
+![example](https://tk-assets.lambdaschool.com/9af0f576-7f21-4133-91df-907515912df5_conway.gif)
+
+Your application, when finished, should include:
 ## MVP
 - [ ] a grid of squares (cells) that can be in at least 2 states (alive, dead)
 - [ ] cells correctly update state based on the rules of Conway's Game of Life
