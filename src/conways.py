@@ -30,6 +30,10 @@ while not done:
  
     # --- Game logic should go here
     
+# Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+# Any live cell with two or three live neighbours lives on to the next generation.
+# Any live cell with more than three live neighbours dies, as if by overpopulation.
+# Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
  
     # --- Screen-clearing code goes here
@@ -39,7 +43,7 @@ while not done:
     screen.fill(GRAY)
  
     # --- Drawing code should go here
-   
+    pygame.draw.rect(screen, WHITE, pygame.Rect(200, 200, 100, 100))
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
