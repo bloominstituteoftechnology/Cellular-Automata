@@ -1,4 +1,4 @@
-# Cellular-Automata
+# Cellular-Automata - A. Franklin
 
 Over the next few days, you will be implementing your own version of Conway's Game of Life - a popular ***cellular automata***. 
 
