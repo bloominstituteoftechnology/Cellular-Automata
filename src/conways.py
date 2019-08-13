@@ -8,8 +8,11 @@ WIN_SIZE = 500
 
 # 1. set up initial states
 
-cur_states = []
-next_states = []
+# cur_states = [0] * [400]
+# cur_states[10] = 1
+# cur_states[30] = 1
+# cur_states[50] = 1
+# next_states = []
 
 pygame.init()
  
@@ -56,8 +59,14 @@ while not done:
         y = 5
         while y < 500: 
             # 2. draw rectangles based on states 
+            # state = cur_states[cur_index]
+            # if state == 0:
+                # pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, 20, 20))
+            # else:
+                # pygame.draw.rect(screen, WHITE, pygame.Rect(x, y, 20, 20))
             # 4. draw based on values in next_state
             pygame.draw.rect(screen, WHITE, pygame.Rect(x, y, 20, 20))
+            # cur_index += 1
             y += 25
         x += 25
 
