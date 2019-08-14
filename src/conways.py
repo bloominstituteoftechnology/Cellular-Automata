@@ -45,10 +45,10 @@ while not done:
  
     # 3. night 2: work on rules that i) look at all neighbors, ii) save new state in 
     # next_states[]
-    current_index = 21
+    current_index = 29
     neighbor_values = [-21, -20, -19, -1, +1, 19, 20, 21]
     neighbors = [current_index - i for i in neighbor_values]
-    print(neighbors)
+    neighbor_states = [cur_states[i] for i in neighbors]
 
     # --- Screen-clearing code goes here
  
