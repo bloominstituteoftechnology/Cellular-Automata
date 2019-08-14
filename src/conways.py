@@ -6,6 +6,11 @@ WHITE = (255, 255, 255)
 GRAY = (25, 25, 25)
 WIN_SIZE = 500
 
+
+# 1. Create a set of initial states with simple pattern (Ex. blinker)
+cur_states = []
+next_states = []
+
 pygame.init()
  
 # Set the width and height of the screen [width, height]
@@ -39,6 +44,15 @@ while not done:
     screen.fill(GRAY)
  
     # --- Drawing code should go here
+    x = 3
+
+    while x < 500:
+        y = 3
+        while y < 500:
+            pygame.draw.rect(screen, WHITE, pygame.Rect(x, y, 20, 20))
+            y+= 25
+
+        x += 25
    
 
     # --- Go ahead and update the screen with what we've drawn.
