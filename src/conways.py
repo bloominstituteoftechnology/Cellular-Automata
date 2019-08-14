@@ -46,7 +46,20 @@ while not done:
     # a. find cur_rect's neighbors
     neighbor_values = [-21, -20, -19, -1, +1, 19, 20, 21]
     # b. find neighbor states
-    neighbors = [current_index - i for i in neighbor_values]
+    neighbors = []
+    # CORNER NEIGHBORS
+    if current_index == 0:
+        neighbors = [1, 20, 21]
+    elif current_index == 19:
+        neighbors = [18, 38, 39]
+    elif current_index == 380:
+        neighbors = [360, 361, 381]
+    elif current_index == 399:
+        neighbors = [378, 379, 398]
+    # BORDER NEIGHBORS
+    # ALL OTHER NEIGHBORS
+    else:
+        neighbors = [current_index + i for i in neighbor_values]
     print(neighbors)
     # c. sum neighbor states
     neighbor_states = [cur_states[i] for i in neighbors]
@@ -69,6 +82,7 @@ while not done:
         # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
         if state_sum == 3:
             new_state = 1
+            print('works?')
         else:
             new_state = 0
 
