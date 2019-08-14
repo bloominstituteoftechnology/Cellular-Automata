@@ -6,6 +6,13 @@ WHITE = (255, 255, 255)
 GRAY = (25, 25, 25)
 WIN_SIZE = 500
 
+#Create set of initial states w/ simple patterns
+cur_states = [0] * 400
+cur_states[10] = 1
+cur_states[30] = 1
+cur_states[50] = 1
+next_states = []
+
 pygame.init()
  
 # Set the width and height of the screen [width, height]
@@ -29,7 +36,14 @@ while not done:
             done = True
  
     # --- Game logic should go here
+
+    # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+    # Any live cell with two or three live neighbours lives on to the next generation.
+    # Any live cell with more than three live neighbours dies, as if by overpopulation.
+    # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
     
+    # 3. Work on rules that i) look at all neighbors, ii) save new state
+    # in next_states[]
 
  
     # --- Screen-clearing code goes here
@@ -39,8 +53,19 @@ while not done:
     screen.fill(GRAY)
  
     # --- Drawing code should go here
-   
-
+    cur_index = 0
+    x = 5
+    while x < 500:
+        y = 5
+        while y < 500:
+            state = cur_states[cur_index]
+            if state == 0:
+                pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, 20, 20))
+            else: 
+                pygame.draw.rect(screen, WHITE, pygame.Rect(x, y, 20, 20))
+            cur_index +=1
+            y+= 25
+        x+= 25
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
