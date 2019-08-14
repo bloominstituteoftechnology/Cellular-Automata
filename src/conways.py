@@ -13,19 +13,14 @@ HEIGHT = 20
 # This sets the margin between each cell
 MARGIN = 15
 
-grid = []
-for row in range(20):
-    # Add an empty array that will hold each cell
-    # in this row
-    grid.append([])
-    for column in range(20):
-        grid[row].append(0)  # Append a cell
 
-grid[9][10] = 1
-grid[10][10] = 1
-grid[11][10] = 1
+
+
+
 
 pygame.init()
+
+
  
 # Set the width and height of the screen [width, height]
 size = (WIN_SIZE, WIN_SIZE)
@@ -41,12 +36,50 @@ done = False
 clock = pygame.time.Clock()
  
 # -------- Main Program Loop -----------
+def new_grid():
+    grid = []
+    for row in range(20):
+        # Add an empty array that will hold each cell
+        # in this row
+        grid.append([])
+        for column in range(20):
+            grid[row].append(1)  # Append a cell
+    # grid[9][10] = 1
+    # grid[10][10] = 1
+    # grid[11][10] = 1
+    return grid
+
+grid = new_grid()
+
+# grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+
+
 while not done:
     # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
- 
+    
     # --- Game logic should go here
     '''
     Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -54,32 +87,45 @@ while not done:
     Any live cell with more than three live neighbours dies, as if by overpopulation.
     Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
     '''
+    def sum_of_neighbors(grid, cell):
+        x = cell[1]
+        y = cell[0]
+        neighbors_coords = [(y-1,x-1), (y-1, x), (y-1, x+1),(y, x-1),(y, x+1),(y+1, x-1),(y+1, x),(y+1, x+1)]
+        neighbors = []
 
-def sum_of_neighbors(cell):
-    x = cell[1]
-    y = cell[0]
-    neighbors = [grid[y-1][x-1], grid[y-1][x], grid[y-1][x+1], grid[y][x-1], grid[y][x+1], grid[y+1][x-1], grid[y+1][x], grid[y+1][x+1]]
+        for coords in neighbors_coords:
+            try:
+                neighbors.append(grid[coords[0]][coords[1]])
+            except IndexError:
+                neighbors.append(None)
 
-    neighbor_total = 0
-    for i in neighbors:
-        if i not None:
-            neighbor_total += i
+        neighbor_total = 0
+        for i in neighbors:
+            if i != None:
+                neighbor_total += i
 
-    return neighbor_total
 
-    for cell in grid:
-        if cell == 1:
-            if sum_of_neighbors < 2:
-                return 0
-            elif sum_of_neighbors < 4:
-                return 1
-            else:
-                return 0
-        else:
-            if sum_of_neighbors == 3:
-                return 1
-            else:
-                return 0
+        return neighbor_total
+
+    def next_gen(grid):
+        for row in range(20):
+            for column in range(20):
+                if grid[row][column] == 1:
+                    if sum_of_neighbors(grid, (row,column)) < 2:
+                        grid[row][column] = 0
+                    elif sum_of_neighbors(grid, (row,column)) < 4:
+                        grid[row][column] = 1
+                    else:
+                        grid[row][column] = 0
+                else:
+                    if sum_of_neighbors(grid, (row,column)) == 3:
+                        grid[row][column] = 1
+                    else:
+                        grid[row][column] = 0
+        return grid
+    
+
+    next_gen(grid)
 
  
     # --- Screen-clearing code goes here
