@@ -14,13 +14,14 @@ border = 2
 num_squares = 23 if len(sys.argv) == 1 else int(sys.argv[1])
 WIN_SIZE =  square_size_w_padding * num_squares
 
-# curr_states = [Totalarrays = numSQRS , indexPerArr = numSqrs]
 
-# next_states = []
 
 curr_states =[ [random.randint(0,1)  for n in range(num_squares)] for i in range(num_squares)]
+for i in curr_states:
+    print (i)
+next_states = [[0 for n in range(num_squares)] for i in range(num_squares)]
 
-print(curr_states)
+
 
 pygame.init()
  
@@ -38,6 +39,7 @@ done = False
 clock = pygame.time.Clock()
  
 # -------- Main Program Loop -----------
+
 while not done:
     # --- Main event loop
     for event in pygame.event.get():
@@ -52,10 +54,34 @@ while not done:
     # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
     #3. WORK ON RULES THAT 1) LOOK AT ALL NEIGHBORS, 2) SAVE THE NEW STATE IN NEXT_STATES[]
-    # for i in len(curr_states):
-    #     for node in len(curr_states[i]):
-    #         if i-1 <= 0 and node  0 
+    locals=[-1, 0, 1]
+    for i in range(len(curr_states)):
+        for node in range(len(curr_states[i])):
+            count = 0
+            for j in locals:
+                for k in locals:
+                    if i + j >= 0 and i + j < num_squares and node + k >= 0 and node + k < num_squares and curr_states[(i + j)][(node + k)] == 1:
+                        count += 1
+            if curr_states[i][node] == 1:
+                count -= 1
+                if count < 2 or count > 3:
+                    next_states[i][node] = 0
+                else:
+                    next_states[i][node] = 1
+            else:
+                if count == 3:
+                    next_states[i][node] = 1
+                else:
+                    next_states[i][node] = 0
 
+            # print(curr_states[i][node],  count,  next_states[i][node])
+    for i in range(len(next_states)):
+        for node in range(len(next_states[i])):
+            curr_states[i][node] = next_states[i][node]
+    
+    # print("----------------NEW STATE------------------")
+    # for i in curr_states:
+    #     print(i)
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to gray. Don't put other drawing commands
@@ -70,7 +96,7 @@ while not done:
         y= starting_margins
         while y < WIN_SIZE:
             # 2 draw based IN CURR_STATES
-            COLOR = BLACK if curr_states[round((x - starting_margins)/num_squares)][round((y-starting_margins)/num_squares)] == 0 else WHITE
+            COLOR = BLACK if curr_states[int((x - starting_margins)/square_size_w_padding)][int((y-starting_margins)/square_size_w_padding)] == 0 else WHITE
     
             # 4 Draw based on values in next_states
             pygame.draw.rect(screen, COLOR, pygame.Rect(x, y, (square_size_w_padding - border), (square_size_w_padding - border)) )
@@ -85,5 +111,3 @@ while not done:
  
 # Close the window and quit.
 pygame.quit()
-
-# WIN_SIZE/Y 
