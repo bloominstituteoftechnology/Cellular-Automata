@@ -47,10 +47,7 @@ while not done:
     # next_states[]
     current_index = 21
     neighbor_values = [-21, -20, -19, -1, +1, 19, 20, 21]
-    neighbors = []
-    for i in neighbor_values:
-        neighbor_index = current_index + i
-        neighbors.append(neighbor_index)
+    neighbors = [current_index - i for i in neighbor_values]
     print(neighbors)
 
     # --- Screen-clearing code goes here
