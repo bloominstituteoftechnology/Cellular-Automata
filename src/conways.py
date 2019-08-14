@@ -37,30 +37,42 @@ while not done:
             done = True
  
     # --- Game logic should go here
-    
-    # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-    # Any live cell with two or three live neighbours lives on to the next generation.
-    # Any live cell with more than three live neighbours dies, as if by overpopulation.
-    # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
- 
+
     # 3. night 2: work on rules that i) look at all neighbors, ii) save new state in 
     # next_states[]
 
-    # a. find cur_rect's neighbors
-    # b. find neighbor states
-    # c. sum neighbor states
-    # d. update cur_rect state based on sum of neighbor states
-
     current_index = 29
+    # ADD LOGIC TO CHECK NEIGHBORS DEPENDING ON CURRENT INDEX! corners, upper 
+    # a. find cur_rect's neighbors
     neighbor_values = [-21, -20, -19, -1, +1, 19, 20, 21]
+    # b. find neighbor states
     neighbors = [current_index - i for i in neighbor_values]
     print(neighbors)
+    # c. sum neighbor states
     neighbor_states = [cur_states[i] for i in neighbors]
     print(neighbor_states)
     state_sum = 0 
     for i in neighbor_states:
         state_sum += i
     print(state_sum)
+    # d. update cur_rect state based on sum of neighbor states
+    new_state = 0
+    if cur_states[current_index] == 1:
+        # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+        # Any live cell with more than three live neighbours dies, as if by overpopulation.
+        if state_sum < 2 or state_sum > 3:
+            new_state = 0
+        # Any live cell with two or three live neighbours lives on to the next generation.
+        else:
+            new_state = 1
+    else:
+        # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+        if state_sum == 3:
+            new_state = 1
+        else:
+            new_state = 0
+
+ 
 
     # --- Screen-clearing code goes here
  
