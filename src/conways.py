@@ -55,6 +55,18 @@ while not done:
     Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
     '''
 
+def sum_of_neighbors(cell):
+    x = cell[1]
+    y = cell[0]
+    neighbors = [grid[y-1][x-1], grid[y-1][x], grid[y-1][x+1], grid[y][x-1], grid[y][x+1], grid[y+1][x-1], grid[y+1][x], grid[y+1][x+1]]
+
+    neighbor_total = 0
+    for i in neighbors:
+        if i not None:
+            neighbor_total += i
+
+    return neighbor_total
+
     for cell in grid:
         if cell == 1:
             if sum_of_neighbors < 2:
