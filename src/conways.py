@@ -52,9 +52,9 @@ while not done:
     # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
     #3. WORK ON RULES THAT 1) LOOK AT ALL NEIGHBORS, 2) SAVE THE NEW STATE IN NEXT_STATES[]
-    for i in len(curr_states):
-        for node in len(curr_states[i]):
-            if i-1 <= 0 and node  0 
+    # for i in len(curr_states):
+    #     for node in len(curr_states[i]):
+    #         if i-1 <= 0 and node  0 
 
     # --- Screen-clearing code goes here
  
