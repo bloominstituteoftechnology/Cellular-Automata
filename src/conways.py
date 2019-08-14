@@ -30,7 +30,7 @@ while not done:
  
     # --- Game logic should go here
     
-
+    # ******************** Pygame is working ******************** 
  
     # --- Screen-clearing code goes here
  
