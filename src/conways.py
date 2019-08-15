@@ -34,7 +34,7 @@ class Button():
         pygame.draw.rect(screen, self.color, (self.x-2, self.y-2, self.width+4, self.height+4), 0)
 
         if self.text != "":
-            font = pygame.font.SysFont("Ariel", 12)
+            font = pygame.font.SysFont("Ariel", 14)
             text = font.render(self.text, 1, (0,0,0))
             screen.blit(text, (self.x + (self.width / 2 - text.get_width()/2), self.y + (self.height/2 - text.get_height() /2)))
 
@@ -113,13 +113,16 @@ def make_random_grid(x, y):
 #create starting grid
 grid = make_random_grid(MATRIX_SIZE, MATRIX_SIZE)
 generation = 0
+is_paused = False
+speed = 1
 
 #create buttons
 # buttons take color, x, y, width, height, text
-pause = Button(PURPLE, 0, 490, 50, 10, "Play/Pause")
-restart = Button(PURPLE, 51, 490, 50, 10, "Restart")
+pause = Button(PURPLE, 0, 488, 60, 12, "Play/Pause")
+restart = Button(PURPLE, 70, 488, 60, 12, "Restart")
+dec_speed = Button(PURPLE, 150, 488, 80, 12, "Decrease Speed")
+inc_speed = Button(PURPLE, 240, 488, 80, 12, "Increase Speed")
 
-is_paused = False
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
@@ -134,10 +137,18 @@ while not done:
             if restart.hover(pos):
                 grid = make_random_grid(MATRIX_SIZE, MATRIX_SIZE)
                 generation = 0
+            if inc_speed.hover(pos):
+                if speed < 10:
+                    speed += 1
+            if dec_speed.hover(pos):
+                if speed > 1:
+                    speed -= 1
 
     # --- Game logic should go here
     if not is_paused:
         grid_copy = make_new_grid(grid)
+        gen_button = Button(PURPLE, 400, 488, 100, 12, "Generation: " + str(generation))
+        speed_display = Button(PURPLE, 340, 488, 50, 12, "Speed: " + str(speed))
         generation += 1
 
     # --- Screen-clearing code goes here
@@ -170,16 +181,16 @@ while not done:
     #draw buttons
     pause.draw(screen, (0,0,0))
     restart.draw(screen, (0,0,0))
-
-    # # add buttons
-    # pause = Button()
-    # # pause.text = "Play/Pause"
-    # screen.blit(pause.get_text(), pause.get_rec())
+    gen_button.draw(screen, (0,0,0))
+    dec_speed.draw(screen, (0,0,0))
+    inc_speed.draw(screen, (0,0,0))
+    speed_display.draw(screen, (0,0,0))
+    
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
     # --- Limit to 5 frames per second
-    clock.tick(1)
+    clock.tick(speed)
  
 # Close the window and quit.
 pygame.quit()
