@@ -3,6 +3,7 @@ import pygame, random
 # Define some colors and other constants
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+BLUE = (0 , 0, 255)
 GRAY = (25, 25, 25)
 WIN_SIZE = 500
 
@@ -35,6 +36,7 @@ done = False
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
  
+
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
@@ -43,6 +45,9 @@ while not done:
             done = True
  
     # --- Game logic should go here
+    # generation += 1
+
+    # pygame.display.set_caption("Conway's Game of Life, Generation " + str(generation))
 
     # 3. night 2: work on rules that i) look at all neighbors, ii) save new state in 
     # next_states[]
@@ -51,27 +56,26 @@ while not done:
 
     # Calc number of live neighbors
     # index = current cel
-    width = 20
-    e = index + width
-    w = index - width
-    n = index - 1
-    s = index + 1
-    ne = n + width
-    nw = n - width
-    se = s + width
-    sw = s - width
 
-    live_neighbors = 0
-    if cur_states[e] == 1:
-        live_neighbors += 1
-    if cur_states[w] == 1:
-        live_neighbors += 1
-    if cur_states[n] == 1:
-        live_neighbors += 1
-    if cur_states[s] == 1:
-        live_neighbors += 1
+    # width = 20
+    # e = index + width
+    # w = index - width
+    # n = index - 1
+    # s = index + 1
+    # ne = n + width
+    # nw = n - width
+    # se = s + width
+    # sw = s - width
 
-
+    # live_neighbors = 0
+    # if cur_states[e] == 1:
+    #     live_neighbors += 1
+    # if cur_states[w] == 1:
+    #     live_neighbors += 1
+    # if cur_states[n] == 1:
+    #     live_neighbors += 1
+    # if cur_states[s] == 1:
+    #     live_neighbors += 1
 
     # MY LOGIC TO CHECK NEIGHBORS
 
@@ -121,7 +125,7 @@ while not done:
 
     # d. update cur_rect state based on sum of neighbor states
 
-    new_states = None * 400
+    new_states = [None] * 400
 
     if cur_states[current_index] == 1:
         # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -163,6 +167,11 @@ while not done:
             cur_index += 1
             y += 25
         x += 25
+    
+        pause_button = pygame.draw.rect(screen, BLUE, pygame.Rect(200, 420, 150, 75))
+        font = pygame.font.SysFont('Arial', 25)
+        text = font.render('Pause', True, (14, 28, 54))
+        screen.blit(text, pause_button)
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
