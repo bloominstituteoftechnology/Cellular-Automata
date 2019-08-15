@@ -117,7 +117,9 @@ generation = 0
 #create buttons
 # buttons take color, x, y, width, height, text
 pause = Button(PURPLE, 0, 490, 50, 10, "Play/Pause")
+restart = Button(PURPLE, 51, 490, 50, 10, "Restart")
 
+is_paused = False
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
@@ -128,11 +130,15 @@ while not done:
         pos = pygame.mouse.get_pos()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if pause.hover(pos):
-                print("clicked pause")
+                is_paused = not is_paused
+            if restart.hover(pos):
+                grid = make_random_grid(MATRIX_SIZE, MATRIX_SIZE)
+                generation = 0
 
     # --- Game logic should go here
-    grid_copy = make_new_grid(grid)
-    generation += 1
+    if not is_paused:
+        grid_copy = make_new_grid(grid)
+        generation += 1
 
     # --- Screen-clearing code goes here
  
@@ -161,7 +167,9 @@ while not done:
 
     grid = grid_copy
 
+    #draw buttons
     pause.draw(screen, (0,0,0))
+    restart.draw(screen, (0,0,0))
 
     # # add buttons
     # pause = Button()
