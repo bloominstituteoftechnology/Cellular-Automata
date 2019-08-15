@@ -7,7 +7,7 @@ BLUE = (0, 0, 255)
 PURPLE = (138, 43, 226)
 GRAY = (25, 25, 25)
 WIN_SIZE = 500
-MATRIX_SIZE = 20
+MATRIX_SIZE = int(WIN_SIZE / 25)
 
 pygame.init()
  
@@ -37,10 +37,10 @@ def make_grid(x, y):
 def check_neighbors(grid, row, column):
     x = row
     y = column
-    #neighbor directions: 
-    ngb_cells = [(x-1,y-1),(x-1,0),(x-1,y+1),
-                (x,y-1),        (x,y+1),   
-                (x+1,y-1),(x+1,0),(x+1,y+1),]
+    #neighbor directions:
+    ngb_cells = [(x-1, y-1),(x-1, y),(x-1, y+1),
+                (x, y-1),            (x, y+1),   
+                (x+1, y-1),(x+1, y),(x+1, y+1),]
     count = 0
     for x,y in ngb_cells:
         if x >= 0 and y >= 0:
@@ -48,25 +48,18 @@ def check_neighbors(grid, row, column):
                 count += grid[x][y]
             except:
                 pass
-    
     return count
 
 def cell_rules(cell, neighbors):
-# Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-# Any live cell with more than three live neighbours dies, as if by overpopulation.
+# Any live cell with fewer than two/more than three live neighbours dies, as if by underpopulation/overpopulation.
 # Any live cell with two or three live neighbours lives on to the next generation.
 # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-    #if cell is alive and has less than 2 or more than 3 neighbors it dies
-    # otherwise it lives on
-    if cell:
-        if neighbors < 2 or neighbors > 3:
-            return 0
-        else:
+    if neighbors == 3:
+        return 1
+    elif cell:
+        if neighbors == 2:
             return 1
-    # if cell is dead it must have 3 neighbors to come alive
-    else:
-        if neighbors == 3:
-            return 1
+    return 0
 
 def make_new_grid(grid):
     x = len(grid)
@@ -81,13 +74,18 @@ def make_new_grid(grid):
     return new_grid
 
 #make starting grid
-grid = make_grid(MATRIX_SIZE, MATRIX_SIZE)
+def make_random_grid(x, y):
+    grid = []
+    for r in range(x): #rows
+        row = []
+        for c in range(y): #columns
+            row.append(random.randint(0,1)) #initialize values
+        grid.append(row) 
+    return grid
 
-# make testing blinker pattern
-grid[2][1] = 1
-grid[2][2] = 1
-grid[2][3] = 1
- 
+#create starting grid
+grid = make_random_grid(MATRIX_SIZE, MATRIX_SIZE)
+
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
@@ -96,32 +94,8 @@ while not done:
             done = True
  
     # --- Game logic should go here
-    
-    # 3. Work on rules that i) look at all neighbors, ii) save new state
-    # in next_states[]
-    tmp = 0
-    if tmp < 10:
-        temp = check_neighbors(grid, 2, 2)
-        print(f"***********{temp}**************")
-        tmp += 1
-    else:
-        pygame.quit()
-    # new_grid = make_new_grid(grid)
-
-
-    # if grid[row][column] == 1:
-    #     if sum_of_neighbors(grid, (row,column)) < 2:
-    #         grid[row][column] = 0
-    #     elif sum_of_neighbors(grid, (row,column)) < 4:
-    #         grid[row][column] = 1
-    #     else:
-    #         grid[row][column] = 0
-    # else:
-    #     if sum_of_neighbors(grid, (row,column)) == 3:
-    #         grid[row][column] = 1
-    #     else:
-    #         grid[row][column] = 0
-
+    grid_copy = make_new_grid(grid)
+    generation = 0
  
     # --- Screen-clearing code goes here
  
@@ -137,7 +111,7 @@ while not done:
         x = 3.5
         while x < WIN_SIZE:
             # draw based on current state
-            state = grid[row][col]
+            state = grid_copy[row][col]
             # draw based on next states
             if state == 0:
                 pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, MATRIX_SIZE, MATRIX_SIZE))
@@ -150,9 +124,10 @@ while not done:
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
+    grid = grid_copy
  
     # --- Limit to 5 frames per second
-    clock.tick(5)
+    clock.tick(1)
  
 # Close the window and quit.
 pygame.quit()
