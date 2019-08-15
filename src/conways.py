@@ -47,6 +47,36 @@ while not done:
     # 3. night 2: work on rules that i) look at all neighbors, ii) save new state in 
     # next_states[]
 
+    # GUIDED DEMO LOGIC TO CHECK NEIGHBORS
+
+    # Calc number of live neighbors
+    # index = current cel
+    width = 20
+    e = index + width
+    w = index - width
+    n = index - 1
+    s = index + 1
+    ne = n + width
+    nw = n - width
+    se = s + width
+    sw = s - width
+
+    live_neighbors = 0
+    if cur_states[e] == 1:
+        live_neighbors += 1
+    if cur_states[w] == 1:
+        live_neighbors += 1
+    if cur_states[n] == 1:
+        live_neighbors += 1
+    if cur_states[s] == 1:
+        live_neighbors += 1
+
+
+
+    # MY LOGIC TO CHECK NEIGHBORS
+
+
+
     current_index = 29
     # ADD LOGIC TO CHECK NEIGHBORS DEPENDING ON CURRENT INDEX! corners, upper 
     # a. find cur_rect's neighbors
@@ -87,23 +117,26 @@ while not done:
     for i in neighbor_states:
         state_sum += i
     print(state_sum)
+    # *** could move this logic to a separate helper function
+
     # d. update cur_rect state based on sum of neighbor states
-    new_state = 0
+
+    new_states = None * 400
+
     if cur_states[current_index] == 1:
         # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
         # Any live cell with more than three live neighbours dies, as if by overpopulation.
         if state_sum < 2 or state_sum > 3:
-            new_state = 0
+            new_states[current_index] = 0
         # Any live cell with two or three live neighbours lives on to the next generation.
         else:
-            new_state = 1
+            new_states[current_index] = 1
     else:
         # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
         if state_sum == 3:
-            new_state = 1
-            print(new_state)
+            new_states[current_index] = 1
         else:
-            new_state = 0
+            new_states[current_index] = 0
 
  
 
