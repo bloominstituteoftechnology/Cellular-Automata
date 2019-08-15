@@ -10,7 +10,6 @@ WIN_SIZE = 500
 MATRIX_SIZE = int(WIN_SIZE / 25)
 
 pygame.init()
- 
 # Set the width and height of the screen [width, height]
 size = (WIN_SIZE, WIN_SIZE)
 screen = pygame.display.set_mode(size)
@@ -18,6 +17,34 @@ screen = pygame.display.set_mode(size)
 # Add a title
 pygame.display.set_caption("Conway's Game of Life")
  
+# Button class for buttons
+class Button():
+    def __init__(self, color, x, y, width, height, text=""):
+        self.color = color
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.text = text
+
+    #draw button
+    def draw(self, screen, outline=None):
+        if outline:
+            pygame.draw.rect(screen, outline, (self.x-2, self.y-2, self.width+4, self.height+4), 0)
+        pygame.draw.rect(screen, self.color, (self.x-2, self.y-2, self.width+4, self.height+4), 0)
+
+        if self.text != "":
+            font = pygame.font.SysFont("Ariel", 12)
+            text = font.render(self.text, 1, (0,0,0))
+            screen.blit(text, (self.x + (self.width / 2 - text.get_width()/2), self.y + (self.height/2 - text.get_height() /2)))
+
+    #if mouse is over button
+    def hover(self, pos):
+        if pos[0] > self.x and pos[0] < self.x + self.width:
+            if pos[1] > self.y and pos[1] < self.y + self.height:
+                return True
+        return False
+
 # Loop until the user clicks the close button.
 done = False
  
@@ -85,6 +112,11 @@ def make_random_grid(x, y):
 
 #create starting grid
 grid = make_random_grid(MATRIX_SIZE, MATRIX_SIZE)
+generation = 0
+
+#create buttons
+# buttons take color, x, y, width, height, text
+pause = Button(PURPLE, 0, 490, 50, 10, "Play/Pause")
 
 # -------- Main Program Loop -----------
 while not done:
@@ -92,11 +124,16 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
- 
+        #get mouse position
+        pos = pygame.mouse.get_pos()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if pause.hover(pos):
+                print("clicked pause")
+
     # --- Game logic should go here
     grid_copy = make_new_grid(grid)
-    generation = 0
- 
+    generation += 1
+
     # --- Screen-clearing code goes here
  
     # Here, we clear the screen to gray. Don't put other drawing commands
@@ -122,9 +159,16 @@ while not done:
         row += 1
         y += 25
 
+    grid = grid_copy
+
+    pause.draw(screen, (0,0,0))
+
+    # # add buttons
+    # pause = Button()
+    # # pause.text = "Play/Pause"
+    # screen.blit(pause.get_text(), pause.get_rec())
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
-    grid = grid_copy
  
     # --- Limit to 5 frames per second
     clock.tick(1)
