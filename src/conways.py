@@ -41,7 +41,7 @@ while not done:
     # 3. night 2: work on rules that i) look at all neighbors, ii) save new state in 
     # next_states[]
 
-    current_index = 398
+    current_index = 29
     # ADD LOGIC TO CHECK NEIGHBORS DEPENDING ON CURRENT INDEX! corners, upper 
     # a. find cur_rect's neighbors
     # b. find neighbor states
@@ -62,7 +62,13 @@ while not done:
     elif current_index in range(381, 399):
         neighbor_values = [-21, -20, -19, -1, +1]
         neighbors = [current_index + i for i in neighbor_values]
+    elif current_index % 20 == 0:
+        neighbor_values = [-20, -19, -1, 20, 21]
+        neighbors = [current_index + i for i in neighbor_values]
         print('works???')
+    elif (current_index + 1) % 20 == 0:
+        neighbor_values = [-21, -20, -1, 19, 20,]
+        neighbors = [current_index + i for i in neighbor_values]
     # ALL OTHER NEIGHBORS
     else:
         neighbor_values = [-21, -20, -19, -1, +1, 19, 20, 21]
@@ -89,6 +95,7 @@ while not done:
         # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
         if state_sum == 3:
             new_state = 1
+            print(new_state)
         else:
             new_state = 0
 
