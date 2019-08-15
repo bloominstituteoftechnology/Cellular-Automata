@@ -12,7 +12,13 @@ cur_states = [0] * 400
 cur_states[10] = 1
 cur_states[30] = 1
 cur_states[50] = 1
-# next_states = []
+next_states = []
+
+# 1. v.2 fill cur_states with random states
+
+# cur_states = [0] * 400
+# for i in range(0, len(cur_states)):
+#     cur_states[i] = random.randint(0, 1)
 
 pygame.init()
  
