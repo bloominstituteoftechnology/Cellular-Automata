@@ -186,9 +186,9 @@ while not done:
 
     # PAUSE BUTTON
     
-    pause_button = pygame.draw.rect(screen, BLUE, pygame.Rect(5, 510, 100, 50))
+    pause_button = pygame.draw.rect(screen, WHITE, pygame.Rect(5, 510, 100, 50))
     font = pygame.font.SysFont('freesansbold.ttf', 16)
-    text = font.render('Play/Pause', True, (14, 28, 54))
+    text = font.render('Play/Pause', True, BLACK)
     textRect = text.get_rect()
     textRect.center = (pause_button.center[0], pause_button.center[1])
     screen.blit(text, pause_button)
@@ -199,6 +199,26 @@ while not done:
         click_pos = pygame.mouse.get_pos()
         if pause_button.collidepoint(click_pos):
             is_paused = not is_paused
+
+    # RESTART BUTTON
+
+    restart_button = pygame.draw.rect(screen, WHITE, pygame.Rect(115, 510, 100, 50))
+    font = pygame.font.SysFont('freesansbold.ttf', 16)
+    text = font.render('Restart', True, BLACK)
+    textRect = text.get_rect()
+    textRect.center = (restart_button.center[0], restart_button.center[1])
+    screen.blit(text, restart_button)
+
+    # RESTART LOGIC
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        click_pos = pygame.mouse.get_pos()
+        if restart_button.collidepoint(click_pos):
+            generation = 0
+            for i in range(0, len(cur_states)):
+                cur_states[i] = random.randint(0, 1)
+            if is_paused:
+                is_paused = False
 
     # generation_display = pygame.draw.rect(screen, GRAY, pygame.Rect(5, 500, 150, 40))
     # gen_text = str(generation) + ' generations'
