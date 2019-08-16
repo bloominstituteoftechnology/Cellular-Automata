@@ -228,8 +228,6 @@ while not done:
     # textRect.center = (generation_display.center[0], generation_display.center[1])
     # screen.blit(text, textRect)
 
-
-
     # FASTER BUTTON
 
     faster_button = pygame.draw.rect(screen, WHITE, pygame.Rect(225, 510, 100, 50))
@@ -243,6 +241,21 @@ while not done:
         click_pos = pygame.mouse.get_pos()
         if faster_button.collidepoint(click_pos):
             framerate += 3
+
+    # SLOWER BUTTON
+
+    slower_button = pygame.draw.rect(screen, WHITE, pygame.Rect(335, 510, 100, 50))
+    font = pygame.font.SysFont('freesansbold.ttf', 16)
+    text = font.render('Slower', True, BLACK)
+    textRect = text.get_rect()
+    textRect.center = (slower_button.center[0], slower_button.center[1])
+    screen.blit(text, slower_button)
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        click_pos = pygame.mouse.get_pos()
+        if slower_button.collidepoint(click_pos):
+            if framerate > 3:
+                framerate -= 3
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
