@@ -9,17 +9,16 @@ WIN_SIZE = 500
 
 # 1. v.1 set up initial states
 
-cur_states = [0] * 400
-cur_states[10] = 1
-cur_states[30] = 1
-cur_states[50] = 1
-next_states = []
+# cur_states = [0] * 400
+# cur_states[10] = 1
+# cur_states[30] = 1
+# cur_states[50] = 1
 
 # 1. v.2 fill cur_states with random states
 
-# cur_states = [0] * 400
-# for i in range(0, len(cur_states)):
-#     cur_states[i] = random.randint(0, 1)
+cur_states = [0] * 400
+for i in range(0, len(cur_states)):
+    cur_states[i] = random.randint(0, 1)
 
 pygame.init()
  
@@ -32,7 +31,6 @@ generation = 0
 is_paused = False
 
 # Add a title
-pygame.display.set_caption("Conway's Game of Life, Generation " + str(generation)) 
 
 # Loop until the user clicks the close button.
 done = False
@@ -50,6 +48,7 @@ while not done:
     # --- Game logic should go here
     
     generation += 1
+    pygame.display.set_caption("Conway's Game of Life, Generation " + str(generation)) 
 
     # PAUSE/PLAY
 
