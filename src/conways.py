@@ -100,7 +100,9 @@ while not done:
 
     for current_index in range(len(cur_states)):
         neighbors = []
+
         # CORNER NEIGHBORS
+
         if current_index == 0:
             neighbors = [1, 20, 21]
         elif current_index == 19:
@@ -109,7 +111,9 @@ while not done:
             neighbors = [360, 361, 381]
         elif current_index == 399:
             neighbors = [378, 379, 398]
+
         # BORDER NEIGHBORS
+
         elif current_index in range(1, 19):
             neighbor_values = [-1, +1, 19, 20, 21]
             neighbors = [current_index + i for i in neighbor_values]
@@ -122,11 +126,15 @@ while not done:
         elif (current_index + 1) % 20 == 0:
             neighbor_values = [-21, -20, -1, 19, 20,]
             neighbors = [current_index + i for i in neighbor_values]
+
         # ALL OTHER NEIGHBORS
+
         else:
             neighbor_values = [-21, -20, -19, -1, +1, 19, 20, 21]
             neighbors = [current_index + i for i in neighbor_values]
+
         # c. sum neighbor states
+
         neighbor_states = [cur_states[i] for i in neighbors]
         
         state_sum = 0 
@@ -161,8 +169,11 @@ while not done:
     screen.fill(GRAY)
  
     # --- Drawing code should go here
+
     # pygame.draw.rect(surface, color, pygame.Rect(left, top, width, height))
+
     cur_index = 0
+
     x = 5
     while x < 500:
         y = 5
@@ -178,10 +189,17 @@ while not done:
             y += 25
         x += 25
     
-        pause_button = pygame.draw.rect(screen, BLUE, pygame.Rect(200, 420, 150, 75))
-        font = pygame.font.SysFont('Arial', 25)
-        text = font.render('Pause', True, (14, 28, 54))
-        screen.blit(text, pause_button)
+    pause_button = pygame.draw.rect(screen, BLUE, pygame.Rect(200, 420, 100, 50))
+    font = pygame.font.SysFont('freesansbold.ttf', 16)
+    text = font.render('Play/Pause', True, (14, 28, 54))
+    screen.blit(text, pause_button)
+
+    generation_display = pygame.draw.rect(screen, GRAY, pygame.Rect(5, 5, 150, 40))
+    gen_text = str(generation) + ' generations'
+    text = font.render(gen_text, True, (175, 203, 255))
+    textRect = text.get_rect()
+    textRect.center = (generation_display.center[0], generation_display.center[1])
+    screen.blit(text, textRect)
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
