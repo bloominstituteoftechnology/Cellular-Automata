@@ -23,7 +23,7 @@ for i in range(0, len(cur_states)):
 pygame.init()
  
 # Set the width and height of the screen [width, height]
-size = (WIN_SIZE, WIN_SIZE)
+size = (WIN_SIZE, 570)
 screen = pygame.display.set_mode(size)
 
 # Store generation number and pause state
@@ -46,16 +46,6 @@ while not done:
             done = True
  
     # --- Game logic should go here
-    
-    generation += 1
-    pygame.display.set_caption("Conway's Game of Life, Generation " + str(generation)) 
-
-    # PAUSE/PLAY
-
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        click_pos = pygame.mouse.get_pos()
-        if pause_button.collidepoint(click_pos):
-            is_paused = not is_paused
 
     # have a boolean keeping track of if game is paused or stopped...
     # could toggle pause button into a play button
@@ -96,71 +86,76 @@ while not done:
 
     # MY LOGIC TO CHECK NEIGHBORS
 
-    new_states = [None] * 400
+    if not is_paused:
 
-    for current_index in range(len(cur_states)):
-        neighbors = []
+        generation += 1
+        pygame.display.set_caption("Conway's Game of Life, Generation " + str(generation)) 
 
-        # CORNER NEIGHBORS
+        new_states = [None] * 400
 
-        if current_index == 0:
-            neighbors = [1, 20, 21]
-        elif current_index == 19:
-            neighbors = [18, 38, 39]
-        elif current_index == 380:
-            neighbors = [360, 361, 381]
-        elif current_index == 399:
-            neighbors = [378, 379, 398]
+        for current_index in range(len(cur_states)):
+            neighbors = []
 
-        # BORDER NEIGHBORS
+            # CORNER NEIGHBORS
 
-        elif current_index in range(1, 19):
-            neighbor_values = [-1, +1, 19, 20, 21]
-            neighbors = [current_index + i for i in neighbor_values]
-        elif current_index in range(381, 399):
-            neighbor_values = [-21, -20, -19, -1, +1]
-            neighbors = [current_index + i for i in neighbor_values]
-        elif current_index % 20 == 0:
-            neighbor_values = [-20, -19, -1, 20, 21]
-            neighbors = [current_index + i for i in neighbor_values]
-        elif (current_index + 1) % 20 == 0:
-            neighbor_values = [-21, -20, -1, 19, 20,]
-            neighbors = [current_index + i for i in neighbor_values]
+            if current_index == 0:
+                neighbors = [1, 20, 21]
+            elif current_index == 19:
+                neighbors = [18, 38, 39]
+            elif current_index == 380:
+                neighbors = [360, 361, 381]
+            elif current_index == 399:
+                neighbors = [378, 379, 398]
 
-        # ALL OTHER NEIGHBORS
+            # BORDER NEIGHBORS
 
-        else:
-            neighbor_values = [-21, -20, -19, -1, +1, 19, 20, 21]
-            neighbors = [current_index + i for i in neighbor_values]
+            elif current_index in range(1, 19):
+                neighbor_values = [-1, +1, 19, 20, 21]
+                neighbors = [current_index + i for i in neighbor_values]
+            elif current_index in range(381, 399):
+                neighbor_values = [-21, -20, -19, -1, +1]
+                neighbors = [current_index + i for i in neighbor_values]
+            elif current_index % 20 == 0:
+                neighbor_values = [-20, -19, -1, 20, 21]
+                neighbors = [current_index + i for i in neighbor_values]
+            elif (current_index + 1) % 20 == 0:
+                neighbor_values = [-21, -20, -1, 19, 20,]
+                neighbors = [current_index + i for i in neighbor_values]
 
-        # c. sum neighbor states
+            # ALL OTHER NEIGHBORS
 
-        neighbor_states = [cur_states[i] for i in neighbors]
-        
-        state_sum = 0 
+            else:
+                neighbor_values = [-21, -20, -19, -1, +1, 19, 20, 21]
+                neighbors = [current_index + i for i in neighbor_values]
 
-        for i in neighbor_states:
-            state_sum += i
+            # c. sum neighbor states
+
+            neighbor_states = [cur_states[i] for i in neighbors]
             
-        # *** could move this logic to a separate helper function
+            state_sum = 0 
 
-        # d. update cur_rect state based on sum of neighbor states
+            for i in neighbor_states:
+                state_sum += i
+                
+            # *** could move this logic to a separate helper function
 
-        if cur_states[current_index] == 1:
-            # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-            # Any live cell with more than three live neighbours dies, as if by overpopulation.
-            if state_sum < 2 or state_sum > 3:
-                new_states[current_index] = 0
-            # Any live cell with two or three live neighbours lives on to the next generation.
+            # d. update cur_rect state based on sum of neighbor states
+
+            if cur_states[current_index] == 1:
+                # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+                # Any live cell with more than three live neighbours dies, as if by overpopulation.
+                if state_sum < 2 or state_sum > 3:
+                    new_states[current_index] = 0
+                # Any live cell with two or three live neighbours lives on to the next generation.
+                else:
+                    new_states[current_index] = 1
             else:
-                new_states[current_index] = 1
-        else:
-            # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-            if state_sum == 3:
-                new_states[current_index] = 1
-            else:
-                new_states[current_index] = 0
-    cur_states = new_states
+                # Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+                if state_sum == 3:
+                    new_states[current_index] = 1
+                else:
+                    new_states[current_index] = 0
+        cur_states = new_states
 
     # --- Screen-clearing code goes here
  
@@ -188,18 +183,29 @@ while not done:
             cur_index += 1
             y += 25
         x += 25
+
+    # PAUSE BUTTON
     
-    pause_button = pygame.draw.rect(screen, BLUE, pygame.Rect(200, 420, 100, 50))
+    pause_button = pygame.draw.rect(screen, BLUE, pygame.Rect(5, 510, 100, 50))
     font = pygame.font.SysFont('freesansbold.ttf', 16)
     text = font.render('Play/Pause', True, (14, 28, 54))
+    textRect = text.get_rect()
+    textRect.center = (pause_button.center[0], pause_button.center[1])
     screen.blit(text, pause_button)
 
-    generation_display = pygame.draw.rect(screen, GRAY, pygame.Rect(5, 5, 150, 40))
-    gen_text = str(generation) + ' generations'
-    text = font.render(gen_text, True, (175, 203, 255))
-    textRect = text.get_rect()
-    textRect.center = (generation_display.center[0], generation_display.center[1])
-    screen.blit(text, textRect)
+    # PAUSE/PLAY LOGIC
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        click_pos = pygame.mouse.get_pos()
+        if pause_button.collidepoint(click_pos):
+            is_paused = not is_paused
+
+    # generation_display = pygame.draw.rect(screen, GRAY, pygame.Rect(5, 500, 150, 40))
+    # gen_text = str(generation) + ' generations'
+    # text = font.render(gen_text, True, (175, 203, 255))
+    # textRect = text.get_rect()
+    # textRect.center = (generation_display.center[0], generation_display.center[1])
+    # screen.blit(text, textRect)
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
