@@ -6,19 +6,17 @@ import random
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (25, 25, 25)
-
+BLUE = ()
 starting_margins = 5
-square_size_w_padding = 22
-border = 2
+square_size_w_padding = 10
+border = 1
 #### RECCOMMENDED MAX = 45
 num_squares = 23 if len(sys.argv) == 1 else int(sys.argv[1])
 WIN_SIZE =  square_size_w_padding * num_squares
-
+generations = 0
 
 
 curr_states =[ [random.randint(0,1)  for n in range(num_squares)] for i in range(num_squares)]
-for i in curr_states:
-    print (i)
 next_states = [[0 for n in range(num_squares)] for i in range(num_squares)]
 
 
@@ -47,7 +45,7 @@ while not done:
             done = True
  
     # --- Game logic should go here
-
+    generations +=1
     # Any live cell with fewer than two live neighbours dies, as if by underpopulation.
     # Any live cell with two or three live neighbours lives on to the next generation.
     # Any live cell with more than three live neighbours dies, as if by overpopulation.
@@ -103,6 +101,11 @@ while not done:
             y += square_size_w_padding
         x += square_size_w_padding
 
+    #pause button ---- here
+    pause_button = pygame.draw.rect(screen, COLOR, pygame.Rect(200, 300, 50, 25))
+    font = pygame.font.SysFont('Arial', 25)
+    text = font.render('Pause', True, (14, 28, 54))
+    screen.blit(text, pause_button)
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
