@@ -26,9 +26,10 @@ pygame.init()
 size = (WIN_SIZE, 570)
 screen = pygame.display.set_mode(size)
 
-# Store generation number and pause state
+# Store generation number, pause state, and framerate
 generation = 0
 is_paused = False
+framerate = 5
 
 # Add a title
 
@@ -155,7 +156,7 @@ while not done:
                     new_states[current_index] = 1
                 else:
                     new_states[current_index] = 0
-        cur_states = new_states
+        cur_states = new_states[:]
 
     # --- Screen-clearing code goes here
  
@@ -227,11 +228,28 @@ while not done:
     # textRect.center = (generation_display.center[0], generation_display.center[1])
     # screen.blit(text, textRect)
 
+
+
+    # FASTER BUTTON
+
+    faster_button = pygame.draw.rect(screen, WHITE, pygame.Rect(225, 510, 100, 50))
+    font = pygame.font.SysFont('freesansbold.ttf', 16)
+    text = font.render('Faster', True, BLACK)
+    textRect = text.get_rect()
+    textRect.center = (faster_button.center[0], faster_button.center[1])
+    screen.blit(text, faster_button)
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        click_pos = pygame.mouse.get_pos()
+        if faster_button.collidepoint(click_pos):
+            framerate += 3
+
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
  
     # --- Limit to 5 frames per second
-    clock.tick(5)
+    
+    clock.tick(framerate)
  
 # Close the window and quit.
 pygame.quit()
