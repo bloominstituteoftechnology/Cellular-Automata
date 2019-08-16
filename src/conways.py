@@ -5,6 +5,7 @@ BLUE = (66, 87, 245)
 WHITE = (255, 255, 255)
 PINK = (242, 172, 241)
 GRAY = (228, 230, 235)
+DGRAY = (192, 192, 192)
 WIN_SIZE = 500
 CELL_SIZE = 20
 
@@ -96,6 +97,7 @@ def main():
     clock = pygame.time.Clock()
 
     generations = 0
+    is_paused = False
 
 
 
@@ -107,14 +109,32 @@ def main():
 
         pygame.display.set_caption("Conway's Game of Life ~ Generation: " + str(generations))
 
-        game = life(game)
+        pause_button = pygame.draw.rect(screen, GRAY, (350, 420, 100, 50))
+        pygame.draw.line(screen, DGRAY, [350, 471], [450, 471], 3)
+        pygame.draw.line(screen, DGRAY, [451, 420], [451, 471], 3)
 
-        for cell in game:
-            color(cell, game)
+        font = pygame.font.SysFont('Arial', 25)
+        label = 'Pause/Play'
+        text = font.render(label, True, (0, 0, 0))
+        textRect = text.get_rect()
+        textRect.center = (pause_button.center[0], pause_button.center[1])
+        screen.blit(text, textRect)
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            click_pos = pygame.mouse.get_pos()
+            if pause_button.collidepoint(click_pos):
+                is_paused = not is_paused
+
+        if not is_paused:
+            game = life(game)
+
+            for cell in game:
+                color(cell, game)
+            generations += 1
 
         pygame.display.flip()
         clock.tick(5)
-        generations += 1
+        
 
     pygame.quit()
     
