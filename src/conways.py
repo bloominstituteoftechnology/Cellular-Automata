@@ -27,15 +27,18 @@ pygame.init()
 size = (WIN_SIZE, WIN_SIZE)
 screen = pygame.display.set_mode(size)
 
+# Store generation number and pause state
+generation = 0
+is_paused = False
+
 # Add a title
-pygame.display.set_caption("Conway's Game of Life")
- 
+pygame.display.set_caption("Conway's Game of Life, Generation " + str(generation)) 
+
 # Loop until the user clicks the close button.
 done = False
  
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
- 
 
 # -------- Main Program Loop -----------
 while not done:
@@ -45,12 +48,32 @@ while not done:
             done = True
  
     # --- Game logic should go here
-    # generation += 1
+    
+    generation += 1
+    
+    # PAUSE/PLAY
 
-    # pygame.display.set_caption("Conway's Game of Life, Generation " + str(generation))
+    if event.type == pygame.MOUSEBUTTONDOWN and # our button clicked ( look at x, y of click, compare to area of buttons; if area is clicked, then halt the logic)
+            is_paused = not is_paused
+
+    # have a boolean keeping track of if game is paused or stopped...
+    # could toggle pause button into a play button
+    # could have text be dynamic depending on the state, or put play/pause
+
+    # RESTART
+
+    if event.type == pygame.MOUSEBUTTONDOWN and # our button clicked ( look at x, y of click, compare to area of buttons; if area is clicked, then set generation -> 0, set current state to initial states)
+    is_paused = not is_paused
+
+    # have a boolean keeping track of if game is paused or stopped...
+    # could toggle pause button into a play button
+    # could have text be dynamic depending on the state, or put play/pause
+
 
     # 3. night 2: work on rules that i) look at all neighbors, ii) save new state in 
     # next_states[]
+
+    # MAIN SIMULATION LOGIC!!!!
 
     # GUIDED DEMO LOGIC TO CHECK NEIGHBORS
 
