@@ -5,153 +5,120 @@ BLUE = (66, 87, 245)
 WHITE = (255, 255, 255)
 PINK = (242, 172, 241)
 GRAY = (228, 230, 235)
-WIN_SIZE = 505
+WIN_SIZE = 500
+CELL_SIZE = 20
 
-WIDTH = 20
-HEIGHT = 20
  
 # This sets the margin between each cell
 MARGIN = 15
 
+assert WIN_SIZE % CELL_SIZE == 0
 
 
-
-
-
-pygame.init()
-
-
- 
-# Set the width and height of the screen [width, height]
-size = (WIN_SIZE, WIN_SIZE)
-screen = pygame.display.set_mode(size)
-
-# Add a title
-pygame.display.set_caption("Conway's Game of Life")
- 
-# Loop until the user clicks the close button.
-done = False
- 
-# Used to manage how fast the screen updates
-clock = pygame.time.Clock()
- 
-# -------- Main Program Loop -----------
 def new_grid():
-    grid = []
-    for row in range(20):
-        # Add an empty array that will hold each cell
-        # in this row
-        grid.append([])
-        for column in range(20):
-            grid[row].append(1)  # Append a cell
-    # grid[9][10] = 1
-    # grid[10][10] = 1
-    # grid[11][10] = 1
+    grid = {}
+    for y in range(CELL_SIZE):
+        for x in range(CELL_SIZE):
+            grid[x, y] = 0
     return grid
 
-grid = new_grid()
+def color(cell, grid):
+    x = cell[0]
+    x = x * CELL_SIZE
+    y = cell[1]
+    y = y * CELL_SIZE
 
-# grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    if grid[cell] == 0:
+        pygame.draw.circle(screen,PINK, (x+50, y+20), 10)
+    if grid[cell] == 1:
+        pygame.draw.circle(screen,BLUE, (x+50, y+20), 10)
+            
 
 
+def find_neighbors(cell, grid):
+    neighbors = 0
+    for x in range(-1,2):
+        for y in range(-1, 2):
+            neighbor_cell = (cell[0] + x, cell[1] + y)
 
-while not done:
-    # --- Main event loop
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
+            if neighbor_cell[0] < CELL_SIZE and neighbor_cell[0] >=1:
+                if neighbor_cell[1] < CELL_SIZE and neighbor_cell[1] >= 0:
+                    if grid[neighbor_cell] == 1:
+                        if x == 0 and y == 0:
+                            neighbors += 0
+                        else:
+                            neighbors += 1
+    return neighbors
+
+def life(grid):
+    nex_gen = {}
+
+    for cell in grid:
+        neighbor_sum = find_neighbors(cell, grid)
+
+        if grid[cell] == 1:
+            if neighbor_sum < 2: 
+                nex_gen[cell] = 0
+            elif neighbor_sum > 3:
+                nex_gen[cell] = 0 
+            else:
+                nex_gen[cell] = 1 
+        else:
+            if neighbor_sum == 3:
+                nex_gen[cell] = 1
+            else:
+                nex_gen[cell] = 0
     
-    # --- Game logic should go here
-    '''
-    Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-    Any live cell with two or three live neighbours lives on to the next generation.
-    Any live cell with more than three live neighbours dies, as if by overpopulation.
-    Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-    '''
-    def sum_of_neighbors(grid, cell):
-        x = cell[1]
-        y = cell[0]
-        neighbors_coords = [(y-1,x-1), (y-1, x), (y-1, x+1),(y, x-1),(y, x+1),(y+1, x-1),(y+1, x),(y+1, x+1)]
-        neighbors = []
+    return nex_gen
 
-        for coords in neighbors_coords:
-            try:
-                neighbors.append(grid[coords[0]][coords[1]])
-            except IndexError:
-                neighbors.append(None)
-
-        neighbor_total = 0
-        for i in neighbors:
-            if i != None:
-                neighbor_total += i
+# -------- Main Program Loop -----------
 
 
-        return neighbor_total
 
-    def next_gen(grid):
-        for row in range(20):
-            for column in range(20):
-                if grid[row][column] == 1:
-                    if sum_of_neighbors(grid, (row,column)) < 2:
-                        grid[row][column] = 0
-                    elif sum_of_neighbors(grid, (row,column)) < 4:
-                        grid[row][column] = 1
-                    else:
-                        grid[row][column] = 0
-                else:
-                    if sum_of_neighbors(grid, (row,column)) == 3:
-                        grid[row][column] = 1
-                    else:
-                        grid[row][column] = 0
-        return grid
-    
+def main():
+    pygame.init()
+    size = (WIN_SIZE, WIN_SIZE)
+    global screen
+    screen = pygame.display.set_mode(size)
 
-    next_gen(grid)
-
- 
-    # --- Screen-clearing code goes here
- 
-    # Here, we clear the screen to gray. Don't put other drawing commands
-    # above this, or they will be erased with this command.
     screen.fill(WHITE)
+    game = new_grid()
+    
+    for cell in game:
+        game[cell] = random.randint(0,1)
  
-    # --- Drawing code should go here
-    for row in range(20):
-        for column in range(20):
-            color = PINK
-            if grid[row][column] == 1:
-                color = BLUE
-            pygame.draw.circle(screen,
-                                color,
-                                (((column+1)*22)+15, ((row+1)*22)),
-                                10)
-   
-#    circle(surface, color, center, radius)
 
-    # --- Go ahead and update the screen with what we've drawn.
-    pygame.display.flip()
- 
-    # --- Limit to 5 frames per second
-    clock.tick(5)
- 
-# Close the window and quit.
-pygame.quit()
+
+
+
+    done = False
+
+    clock = pygame.time.Clock()
+
+    generations = 0
+
+
+
+    while not done:
+        # --- Main event loop
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+
+        pygame.display.set_caption("Conway's Game of Life ~ Generation: " + str(generations))
+
+        game = life(game)
+
+        for cell in game:
+            color(cell, game)
+
+        pygame.display.flip()
+        clock.tick(5)
+        generations += 1
+
+    pygame.quit()
+    
+
+if __name__ == "__main__":
+    main()
+
