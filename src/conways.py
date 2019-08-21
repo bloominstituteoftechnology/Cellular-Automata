@@ -1,4 +1,7 @@
 import pygame, random
+import pygameMenu
+import sys
+from patterns import blinker
  
 # Define some colors and other constants
 BLUE = (66, 87, 245)
@@ -84,9 +87,87 @@ def main():
 
     screen.fill(WHITE)
     game = new_grid()
-    
-    for cell in game:
-        game[cell] = random.randint(0,1)
+
+    if len(sys.argv) == 1 or sys.argv[1] == 'random':
+        for cell in game:
+            game[cell] = random.randint(0,1)
+    elif sys.argv[1] == 'blinker':
+        for cell in blinker:
+            game[cell] = 1
+    elif sys.argv[1] == 'block':
+        game[(1,1)] = 1
+        game[(1,2)] = 1
+        game[(1,7)] = 1
+        game[(1,8)] = 1
+        game[(1,13)] = 1
+        game[(1,14)] = 1
+        game[(2,1)] = 1
+        game[(2,2)] = 1
+        game[(2,7)] = 1
+        game[(2,8)] = 1
+        game[(2,13)] = 1
+        game[(2,14)] = 1
+        game[(4,1)] = 1
+        game[(4,2)] = 1
+        game[(4,7)] = 1
+        game[(4,8)] = 1
+        game[(4,13)] = 1
+        game[(4,14)] = 1
+        game[(5,1)] = 1
+        game[(5,2)] = 1
+        game[(5,7)] = 1
+        game[(5,8)] = 1
+        game[(5,13)] = 1
+        game[(5,14)] = 1
+        game[(7,1)] = 1
+        game[(7,2)] = 1
+        game[(7,7)] = 1
+        game[(7,8)] = 1
+        game[(7,13)] = 1
+        game[(7,14)] = 1
+        game[(8,1)] = 1
+        game[(8,2)] = 1
+        game[(8,7)] = 1
+        game[(8,8)] = 1
+        game[(8,13)] = 1
+        game[(8,14)] = 1
+        game[(10,1)] = 1
+        game[(10,2)] = 1
+        game[(10,7)] = 1
+        game[(10,8)] = 1
+        game[(10,13)] = 1
+        game[(10,14)] = 1
+        game[(11,1)] = 1
+        game[(11,2)] = 1
+        game[(11,7)] = 1
+        game[(11,8)] = 1
+        game[(11,13)] = 1
+        game[(11,14)] = 1
+        game[(13,1)] = 1
+        game[(13,2)] = 1
+        game[(13,7)] = 1
+        game[(13,8)] = 1
+        game[(13,13)] = 1
+        game[(13,14)] = 1
+        game[(14,1)] = 1
+        game[(14,2)] = 1
+        game[(14,7)] = 1
+        game[(14,8)] = 1
+        game[(14,13)] = 1
+        game[(14,14)] = 1
+        game[(16,1)] = 1
+        game[(16,2)] = 1
+        game[(16,7)] = 1
+        game[(16,8)] = 1
+        game[(16,13)] = 1
+        game[(16,14)] = 1
+        game[(17,1)] = 1
+        game[(17,2)] = 1
+        game[(17,7)] = 1
+        game[(17,8)] = 1
+        game[(17,13)] = 1
+        game[(17,14)] = 1
+        
  
 
 
